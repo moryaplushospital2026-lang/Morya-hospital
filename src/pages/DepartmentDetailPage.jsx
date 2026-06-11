@@ -4,13 +4,19 @@ import { useAppointmentModal } from "@/components/site/AppointmentModalContext";
 import { PageBanner } from "@/components/site/PageBanner";
 import { departments, site } from "@/data/site";
 import { usePageMeta } from "@/lib/usePageMeta";
+import { mapDepartment, usePublicItem } from "@/services/content";
 import departmentBanner from "@/assets/images/hero-doctors.jpg";
 import { NotFoundPage } from "./NotFoundPage";
 
 export function DepartmentDetailPage() {
   const { slug } = useParams();
   const { openAppointment } = useAppointmentModal();
-  const department = departments.find((item) => item.slug === slug);
+  const fallbackDepartment = departments.find((item) => item.slug === slug);
+  const [department, loaded] = usePublicItem(
+    `/departments/${slug}`,
+    fallbackDepartment,
+    mapDepartment,
+  );
 
   usePageMeta(
     department
@@ -19,9 +25,11 @@ export function DepartmentDetailPage() {
     department ? department.summary : "The department page you are looking for could not be found.",
   );
 
-  if (!department) {
+  if (!department && loaded) {
     return <NotFoundPage />;
   }
+
+  if (!department) return null;
 
   const Icon = department.icon;
 

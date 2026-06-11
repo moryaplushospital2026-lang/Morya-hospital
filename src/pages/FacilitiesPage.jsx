@@ -1,6 +1,7 @@
 import { PageBanner } from "@/components/site/PageBanner";
-import { facilities } from "@/data/site";
+import { facilities as fallbackFacilities } from "@/data/site";
 import { usePageMeta } from "@/lib/usePageMeta";
+import { mapFacility, usePublicList } from "@/services/content";
 import facilitiesBanner from "@/assets/images/WhatsApp Image 2026-05-26 at 5.41.10 PM.jpeg";
 import facilityDiagnostic from "@/assets/images/WhatsApp Image 2026-05-26 at 5.41.25 PM.jpeg";
 import facilityIcu from "@/assets/images/WhatsApp Image 2026-05-26 at 5.41.28 PM.jpeg";
@@ -19,6 +20,8 @@ const images = {
 };
 
 export function FacilitiesPage() {
+  const facilities = usePublicList("/facilities", fallbackFacilities, mapFacility);
+
   usePageMeta(
     "Facilities | Moryaplus Multi Speciality Hospital Kunjirwadi",
     "Modern facilities at Morya Plus Hospital - ICU, modular OT, diagnostics, pharmacy, private rooms and 24x7 ambulance.",
@@ -41,7 +44,7 @@ export function FacilitiesPage() {
             >
               <div className="aspect-[4/3] overflow-hidden">
                 <img
-                  src={images[facility.img]}
+                  src={facility.image || images[facility.img]}
                   alt={facility.name}
                   className="h-full w-full object-cover transition duration-500 hover:scale-105"
                   loading="lazy"

@@ -22,15 +22,16 @@ import { useAppointmentModal } from "@/components/site/AppointmentModalContext";
 import { Counter } from "@/components/site/Counter";
 import { insuranceLogos } from "@/data/insuranceLogos";
 import {
-  departments,
-  doctors,
+  departments as fallbackDepartments,
+  doctors as fallbackDoctors,
   faqs,
-  facilities,
+  facilities as fallbackFacilities,
   site,
   stats,
   testimonials,
   whyChooseUs,
 } from "@/data/site";
+import { mapDepartment, mapDoctor, mapFacility, usePublicList } from "@/services/content";
 import { usePageMeta } from "@/lib/usePageMeta";
 import doctor1Image from "@/assets/images/doctor-1.jpg";
 import doctor2Image from "@/assets/images/doctor-2.jpg";
@@ -114,6 +115,9 @@ const packageItems = [
 
 export function HomePage() {
   const { openAppointment } = useAppointmentModal();
+  const departments = usePublicList("/departments", fallbackDepartments, mapDepartment);
+  const doctors = usePublicList("/doctors", fallbackDoctors, mapDoctor);
+  const facilities = usePublicList("/facilities", fallbackFacilities, mapFacility);
 
   usePageMeta(
     "Moryaplus Multi Speciality Hospital | Hospital in Kunjirwadi, Pune",
@@ -128,9 +132,9 @@ export function HomePage() {
       <About />
       <StatsSection />
       <PackagesSection />
-      <DepartmentsSection />
-      <DoctorsSpotlightSection onOpenAppointment={openAppointment} />
-      <FacilitiesSection />
+      <DepartmentsSection departments={departments} />
+      <DoctorsSpotlightSection doctors={doctors} onOpenAppointment={openAppointment} />
+      <FacilitiesSection facilities={facilities} />
       <WhyChooseUsSection />
       <EmergencySection />
       <InsuranceSection />
@@ -479,7 +483,7 @@ function PackagesSection() {
   );
 }
 
-function DepartmentsSection() {
+function DepartmentsSection({ departments }) {
   return (
     <section className="container-x py-16">
       <SectionTitle
@@ -518,7 +522,7 @@ function DepartmentsSection() {
   );
 }
 
-function DoctorsSpotlightSection({ onOpenAppointment }) {
+function DoctorsSpotlightSection({ doctors, onOpenAppointment }) {
   return (
     <section className="bg-brand-soft py-16">
       <div className="container-x">
@@ -536,7 +540,7 @@ function DoctorsSpotlightSection({ onOpenAppointment }) {
             >
               <div className="aspect-[4/5] overflow-hidden">
                 <img
-                  src={doctorImages[doctor.img]}
+                  src={doctor.image || doctorImages[doctor.img]}
                   alt={doctor.name}
                   className="h-full w-full object-cover transition duration-500 hover:scale-105"
                   loading="lazy"
@@ -579,7 +583,7 @@ function DoctorsSpotlightSection({ onOpenAppointment }) {
   );
 }
 
-function FacilitiesSection() {
+function FacilitiesSection({ facilities }) {
   return (
     <section className="bg-muted/40 py-16">
       <div className="container-x">
@@ -597,7 +601,7 @@ function FacilitiesSection() {
             >
               <div className="aspect-[4/3] overflow-hidden">
                 <img
-                  src={facilityImages[facility.img]}
+                  src={facility.image || facilityImages[facility.img]}
                   alt={facility.name}
                   className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   loading="lazy"

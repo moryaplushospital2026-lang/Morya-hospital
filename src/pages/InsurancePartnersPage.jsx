@@ -3,6 +3,7 @@ import { PageBanner } from "@/components/site/PageBanner";
 import { insuranceLogos } from "@/data/insuranceLogos";
 import { site } from "@/data/site";
 import { usePageMeta } from "@/lib/usePageMeta";
+import { mapInsurance, usePublicList } from "@/services/content";
 import heroHospital from "@/assets/images/moryahplushospital.png";
 
 const healthInsuranceNames = new Set([
@@ -16,10 +17,64 @@ const healthInsuranceNames = new Set([
   "Star Health & Allied Insurance Company Limited",
 ]);
 
-const healthInsuranceLogos = insuranceLogos.filter((logo) => healthInsuranceNames.has(logo.name));
-const generalInsuranceLogos = insuranceLogos.filter((logo) => !healthInsuranceNames.has(logo.name));
+const darkSurfaceLogoNames = new Set([
+  "Galaxy Health Insurance Company Limited",
+  "IFFCO Tokio General Insurance Company Limited",
+  "National Insurance Company Limited",
+  "Universal Sompo General Insurance Company Limited",
+  "Zurich Kotak General Insurance Company India Limited",
+]);
+
+const logoPresentation = {
+  "Aditya Birla Health Insurance Company Limited": {
+    cardClassName: "border-slate-800/80 bg-slate-900",
+  },
+  "ICICI Lombard General Insurance": {
+    imageClassName: "scale-[1.75]",
+  },
+  "New India Assurance Company Limited": {
+    cardClassName: "border-slate-800/80 bg-slate-900",
+  },
+  "The Oriental Insurance Company Limited": {
+    cardClassName: "border-slate-800/80 bg-slate-900",
+  },
+};
+
+function withLogoPresentation(logo) {
+  const presentation = logoPresentation[logo.name] || {};
+
+  return {
+    ...logo,
+    needsDarkSurface: logo.needsDarkSurface || darkSurfaceLogoNames.has(logo.name),
+    imageClassName: logo.imageClassName || presentation.imageClassName || "",
+    cardClassName: logo.cardClassName || presentation.cardClassName || "",
+  };
+}
+
+function isHealthInsurance(logo) {
+  if (logo.category) {
+    return logo.category === "Health Insurance";
+  }
+
+  const name = (logo.name || logo.company_name || "").toLowerCase();
+  return (
+    healthInsuranceNames.has(logo.name) ||
+    name.includes("health insurance") ||
+    name.includes("niva bupa") ||
+    name.includes("star health") ||
+    name.includes("care health") ||
+    name.includes("manipalcigna") ||
+    name.includes("narayana health")
+  );
+}
 
 export function InsurancePartnersPage() {
+  const dynamicLogos = usePublicList("/insurance", insuranceLogos, mapInsurance).map(
+    withLogoPresentation,
+  );
+  const healthLogos = dynamicLogos.filter(isHealthInsurance);
+  const generalLogos = dynamicLogos.filter((logo) => !isHealthInsurance(logo));
+
   usePageMeta(
     "Insurance & Cashless Partners | Moryaplus Hospital Kunjirwadi Pune",
     `Browse insurance and cashless support partners available through ${site.shortName}.`,
@@ -52,13 +107,13 @@ export function InsurancePartnersPage() {
         <InsuranceSection
           title="Health Insurance"
           description="Health insurance companies currently listed with our support desk."
-          logos={healthInsuranceLogos}
+          logos={healthLogos}
         />
 
         <InsuranceSection
           title="General Insurance"
           description="General insurance companies currently listed for insurance and cashless coordination."
-          logos={generalInsuranceLogos}
+          logos={generalLogos}
         />
 
         <div className="mt-10 text-center">
@@ -96,17 +151,21 @@ function InsuranceSection({ title, description, logos }) {
                 : "border-border/70 bg-white")
             }`}
           >
-            <img
-              src={logo.src}
-              alt={logo.name}
-              className={`max-h-20 w-full object-contain ${logo.imageClassName}`}
-              loading="lazy"
-            />
+            {logo.src ? (
+              <img
+                src={logo.src}
+                alt={logo.name}
+                className={`max-h-20 w-full object-contain ${logo.imageClassName}`}
+                loading="lazy"
+              />
+            ) : (
+              <div className="flex h-20 w-full items-center justify-center rounded-xl border border-dashed border-border bg-muted text-xs font-semibold text-muted-foreground">
+                No logo uploaded
+              </div>
+            )}
             <p
               className={`mt-4 text-center text-sm font-medium leading-relaxed ${
-                logo.cardClassName || logo.needsDarkSurface
-                  ? "text-white/90"
-                  : "text-foreground/80"
+                logo.cardClassName || logo.needsDarkSurface ? "text-white/90" : "text-foreground/80"
               }`}
             >
               {logo.name}

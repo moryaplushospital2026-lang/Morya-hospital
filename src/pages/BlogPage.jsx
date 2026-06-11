@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import { PageBanner } from "@/components/site/PageBanner";
 import { blogPosts } from "@/data/blogs";
 import { usePageMeta } from "@/lib/usePageMeta";
+import { mapBlog, usePublicList } from "@/services/content";
 import blogBanner from "@/assets/images/hero-hospital.jpg";
 
 export function BlogPage() {
+  const posts = usePublicList("/blogs", blogPosts, mapBlog);
+
   usePageMeta(
     "Healthcare Blog | Moryaplus Multi Speciality Hospital, Kunjirwadi Pune",
     "Read SEO-friendly healthcare blogs from Morya Plus Hospital on emergency care, preventive health checkups, and women and child healthcare in Kunjirwadi, Pune.",
@@ -35,35 +38,33 @@ export function BlogPage() {
         </div>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-3">
-          {blogPosts.map((post) => (
+          {posts.map((post) => (
             <article
               key={post.slug}
               className="overflow-hidden rounded-[2rem] border border-border/70 bg-white shadow-card"
             >
               <img
-                src={post.image}
+                src={post.image || blogBanner}
                 alt={post.imageAlt}
                 className={`h-52 w-full object-cover ${post.imageClassName || "object-center"}`}
               />
               <div className="p-7">
-              <div className="flex items-center justify-between gap-4">
-                <span className="rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-brand">
-                  {post.category}
-                </span>
-                <span className="text-sm text-muted-foreground">{post.readTime}</span>
-              </div>
-              <h3 className="mt-5 font-display text-2xl font-bold text-foreground">
-                {post.title}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {post.excerpt}
-              </p>
-              <Link
-                to={`/blog/${post.slug}`}
-                className="mt-5 inline-flex items-center gap-2 font-semibold text-brand hover:text-teal"
-              >
-                Read article <ArrowRight className="h-4 w-4" />
-              </Link>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-brand">
+                    {post.category}
+                  </span>
+                  <span className="text-sm text-muted-foreground">{post.readTime}</span>
+                </div>
+                <h3 className="mt-5 font-display text-2xl font-bold text-foreground">
+                  {post.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{post.excerpt}</p>
+                <Link
+                  to={`/blog/${post.slug}`}
+                  className="mt-5 inline-flex items-center gap-2 font-semibold text-brand hover:text-teal"
+                >
+                  Read article <ArrowRight className="h-4 w-4" />
+                </Link>
               </div>
             </article>
           ))}

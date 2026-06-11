@@ -1,6 +1,7 @@
 import { PageBanner } from "@/components/site/PageBanner";
-import { doctors } from "@/data/site";
+import { doctors as fallbackDoctors } from "@/data/site";
 import { usePageMeta } from "@/lib/usePageMeta";
+import { mapDoctor, usePublicList } from "@/services/content";
 import d1 from "@/assets/images/doctor-1.jpg";
 import d2 from "@/assets/images/doctor-2.jpg";
 import d3 from "@/assets/images/doctor-3.jpg";
@@ -15,6 +16,8 @@ const images = {
 };
 
 export function DoctorsPage() {
+  const doctors = usePublicList("/doctors", fallbackDoctors, mapDoctor);
+
   usePageMeta(
     "Our Doctors & Team | Moryaplus Hospital Kunjirwadi Pune",
     "Meet the experienced consultants and specialists at Morya Plus Multispeciality Hospital, Kunjirwadi.",
@@ -38,7 +41,7 @@ export function DoctorsPage() {
             >
               <div className="aspect-[4/5] overflow-hidden">
                 <img
-                  src={images[doctor.img]}
+                  src={doctor.image || images[doctor.img]}
                   alt={doctor.name}
                   className="h-full w-full object-cover transition duration-500 hover:scale-105"
                   loading="lazy"
