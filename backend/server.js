@@ -1,6 +1,7 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import fs from "fs";
 import path from "path";
 import authRoutes from "./routes/auth.js";
 import resourceRoutes from "./routes/resources.js";
@@ -37,6 +38,20 @@ app.use("/uploads", express.static(path.resolve("backend/uploads")));
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
 app.use("/api/admin", authRoutes);
 app.use("/api", resourceRoutes);
+
+const frontendPath = path.resolve("dist");
+const frontendIndex = path.join(frontendPath, "index.html");
+
+if (fs.existsSync(frontendIndex)) {
+  app.use(express.static(frontendPath));
+  app.use((req, res, next) => {
+    if (req.method === "GET" && req.accepts("html")) {
+      res.sendFile(frontendIndex);
+      return;
+    }
+    next();
+  });
+}
 
 app.use((err, _req, res, _next) => {
   console.error(err);

@@ -22,18 +22,25 @@ async function request(path, options = {}) {
     headers: { ...headers, ...(options.headers || {}) },
   });
 
+  const contentType = response.headers.get("content-type") || "";
+  const isJson = contentType.includes("application/json");
+
   if (!response.ok) {
     let message = "Something went wrong";
-    try {
+    if (isJson) {
       const error = await response.json();
       message = error.message || message;
-    } catch {
+    } else {
       message = response.statusText;
     }
     throw new Error(message);
   }
 
-  return response.status === 204 ? null : response.json();
+  if (response.status === 204) return null;
+  if (!isJson) {
+    throw new Error("Backend API is not connected. Check Hostinger Node app and /api routing.");
+  }
+  return response.json();
 }
 
 export const api = {
