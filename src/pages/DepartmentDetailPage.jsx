@@ -81,19 +81,6 @@ export function DepartmentDetailPage() {
             </ul>
           </div>
 
-          <div className="rounded-3xl border border-border/70 bg-white p-8 shadow-card">
-            <h3 className="font-display text-xl font-bold">Common conditions treated</h3>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {department.conditions.map((condition) => (
-                <span
-                  key={condition}
-                  className="rounded-full bg-brand-soft px-3 py-1.5 text-xs font-medium text-brand"
-                >
-                  {condition}
-                </span>
-              ))}
-            </div>
-          </div>
         </div>
 
         <aside className="space-y-5">
