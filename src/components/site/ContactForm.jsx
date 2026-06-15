@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { buildWhatsAppUrl } from "@/lib/contact";
 import { departments, site } from "@/data/site";
 
@@ -25,42 +25,65 @@ export function ContactForm({
   });
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("submitted") === "true") {
+      setSuccessMessage({
+        title: "Message sent!",
+        text: "Thank you for contacting us. Our hospital team will get back to you soon.",
+      });
+      setStatus("ok");
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((current) => ({ ...current, [name]: value }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const action = event.nativeEvent.submitter?.value || "email";
-
+  const validateForm = () => {
     if (!/^[\d +()-]{7,}$/.test(formData.phone)) {
       setStatus("error");
       setError("Please enter a valid phone number.");
-      return;
+      return false;
     }
 
     if (!formData.name.trim() || !formData.department || !formData.message.trim()) {
       setStatus("error");
       setError("Please fill in the required fields.");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleWhatsApp = () => {
+    if (!validateForm()) {
       return;
     }
 
-    if (action === "whatsapp") {
-      const url = buildWhatsAppUrl(site.whatsapp, formData);
-      const popup = window.open(url, "_blank", "noopener,noreferrer");
+    const url = buildWhatsAppUrl(site.whatsapp, formData);
+    const popup = window.open(url, "_blank", "noopener,noreferrer");
 
-      if (!popup) {
-        window.location.href = url;
-      }
+    if (!popup) {
+      window.location.href = url;
+    }
 
-      setSuccessMessage({
-        title: "WhatsApp opened!",
-        text: "Your message is ready to send to our hospital team.",
-      });
-      setStatus("ok");
-      setError("");
-      setFormData(initialState);
+    setSuccessMessage({
+      title: "WhatsApp opened!",
+      text: "Your message is ready to send to our hospital team.",
+    });
+    setStatus("ok");
+    setError("");
+    setFormData(initialState);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!validateForm()) {
       return;
     }
 
@@ -68,22 +91,20 @@ export function ContactForm({
     setError("");
 
     try {
+      const payload = new FormData();
+      payload.append("access_key", WEB3FORMS_ACCESS_KEY);
+      payload.append("subject", `New contact enquiry from ${site.shortName}`);
+      payload.append("from_name", site.shortName);
+      payload.append("name", formData.name.trim());
+      payload.append("phone", formData.phone.trim());
+      payload.append("email", formData.email.trim() || site.email);
+      payload.append("department", formData.department);
+      payload.append("message", formData.message.trim());
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_ACCESS_KEY,
-          subject: `New contact enquiry from ${site.shortName}`,
-          from_name: site.shortName,
-          name: formData.name.trim(),
-          phone: formData.phone.trim(),
-          email: formData.email.trim(),
-          department: formData.department,
-          message: formData.message.trim(),
-        }),
+        headers: { Accept: "application/json" },
+        body: payload,
       });
       const result = await response.json();
 
@@ -98,11 +119,7 @@ export function ContactForm({
       });
       setFormData(initialState);
     } catch (submitError) {
-      setStatus("error");
-      setError(
-        submitError.message ||
-          `Message could not be sent. Please call us at ${site.phones.reception}.`,
-      );
+      event.currentTarget.submit();
     }
   };
 
@@ -126,7 +143,16 @@ export function ContactForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4">
+    <form
+      action="https://api.web3forms.com/submit"
+      method="POST"
+      onSubmit={handleSubmit}
+      className="grid gap-4"
+    >
+      <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
+      <input type="hidden" name="subject" value={`New contact enquiry from ${site.shortName}`} />
+      <input type="hidden" name="from_name" value={site.shortName} />
+      <input type="hidden" name="redirect" value="https://moryaplushospital.com/contact?submitted=true" />
       <div className="grid gap-4 sm:grid-cols-2">
         <Input
           label="Full Name"
@@ -191,8 +217,8 @@ export function ContactForm({
           {status === "loading" ? "Submitting..." : submitLabel}
         </button>
         <button
-          type="submit"
-          value="whatsapp"
+          type="button"
+          onClick={handleWhatsApp}
           disabled={status === "loading"}
           className="rounded-full border border-brand px-4 py-3 font-semibold text-brand transition hover:bg-brand-soft disabled:cursor-not-allowed disabled:opacity-70"
         >
