@@ -4,7 +4,7 @@ import { insuranceLogos } from "@/data/insuranceLogos";
 import { site } from "@/data/site";
 import { usePageMeta } from "@/lib/usePageMeta";
 import { mapInsurance, usePublicList } from "@/services/content";
-import heroHospital from "@/assets/images/moryahplushospital.png";
+import heroHospital from "@/assets/images/hero-hospital.jpg";
 
 const healthInsuranceNames = new Set([
   "Aditya Birla Health Insurance Company Limited",

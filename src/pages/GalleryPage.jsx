@@ -5,10 +5,22 @@ import { usePageMeta } from "@/lib/usePageMeta";
 import { mapGallery, usePublicList } from "@/services/content";
 import galleryBanner from "@/assets/images/WhatsApp Image 2026-05-26 at 5.41.16 PM (2).jpeg";
 
-const imageModules = import.meta.glob("../assets/images/*.{jpg,jpeg,png,JPG,JPEG,PNG}", {
-  eager: true,
-  import: "default",
-});
+const imageModules = import.meta.glob(
+  [
+    "../assets/images/*.{jpg,jpeg,png,JPG,JPEG,PNG}",
+    "!../assets/images/gallery-*.{jpg,jpeg,png,JPG,JPEG,PNG}",
+    "!../assets/images/facility-*.{jpg,jpeg,png,JPG,JPEG,PNG}",
+    "!../assets/images/doctor-*.{jpg,jpeg,png,JPG,JPEG,PNG}",
+    "!../assets/images/hero-*.{jpg,jpeg,png,JPG,JPEG,PNG}",
+    "!../assets/images/moryahospital.png",
+    "!../assets/images/moryahplushospital.png",
+    "!../assets/images/WhatsApp Image 2026-05-26 at 5.41.16 PM (2).jpeg",
+  ],
+  {
+    eager: true,
+    import: "default",
+  },
+);
 
 const excludedImagePatterns = [
   /^WhatsApp Image 2026-05-26 at 5\.41\.16 PM \(2\)\.jpeg$/i,

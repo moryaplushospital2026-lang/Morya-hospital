@@ -46,7 +46,15 @@ export function Header() {
 
       <div className="container-x flex items-center justify-between py-4 md:py-5">
         <Link to="/" className="group flex items-center gap-3">
-          <img src={logo} alt="Moryaplus Hospital logo" className="h-14 w-auto md:h-16" />
+          <img
+            src={logo}
+            alt="Moryaplus Hospital logo"
+            width="270"
+            height="95"
+            className="h-14 w-auto md:h-16"
+            decoding="async"
+            fetchPriority="high"
+          />
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex">

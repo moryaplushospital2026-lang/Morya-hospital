@@ -6,7 +6,7 @@ import d1 from "@/assets/images/doctor-1.jpg";
 import d2 from "@/assets/images/doctor-2.jpg";
 import d3 from "@/assets/images/doctor-3.jpg";
 import d4 from "@/assets/images/doctor-4.jpg";
-import doctorsBanner from "@/assets/images/moryahplushospital.png";
+import doctorsBanner from "@/assets/images/hero-hospital.jpg";
 
 const images = {
   "doctor-1": d1,

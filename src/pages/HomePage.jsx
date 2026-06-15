@@ -45,7 +45,7 @@ import facilityReception from "@/assets/images/facility-reception.jpg";
 import facilityRoom from "@/assets/images/facility-room.jpg";
 import heroDoctors from "@/assets/images/hero-doctors.jpg";
 import heroEmergency from "@/assets/images/hero-emergency.jpg";
-import heroHospital from "@/assets/images/moryahplushospital.png";
+import heroHospital from "@/assets/images/hero-hospital.jpg";
 
 const facilityImages = {
   icu: facilityIcu,
@@ -164,22 +164,17 @@ function Hero() {
 
   return (
     <section className="relative h-[78vh] min-h-[560px] w-full overflow-hidden">
-      {slides.map((slide, slideIndex) => (
-        <div
-          key={slide.title}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === slideIndex ? "opacity-100" : "opacity-0"
-          }`}
-          aria-hidden={index !== slideIndex}
-        >
-          <img
-            src={slide.img}
-            alt={slide.title}
-            className={`h-full w-full ${slide.imgClassName ?? "object-cover"}`}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.2_0.05_250/.85)] via-[oklch(0.2_0.05_250/.55)] to-transparent" />
-        </div>
-      ))}
+      <div className="absolute inset-0 transition-opacity duration-700">
+        <img
+          src={slides[index].img}
+          alt={slides[index].title}
+          className={`h-full w-full ${slides[index].imgClassName ?? "object-cover"}`}
+          loading={index === 0 ? "eager" : "lazy"}
+          fetchPriority={index === 0 ? "high" : "auto"}
+          decoding="async"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.2_0.05_250/.85)] via-[oklch(0.2_0.05_250/.55)] to-transparent" />
+      </div>
 
       <div className="container-x relative flex h-full items-center">
         <div className="fade-up max-w-2xl text-white" key={slides[index].title}>

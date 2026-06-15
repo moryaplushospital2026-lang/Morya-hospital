@@ -330,7 +330,7 @@
   padding: 20px;
   background:
     linear-gradient(rgba(14, 58, 95, 0.76), rgba(14, 58, 95, 0.76)),
-    url("../assets/images/moryahplushospital.png") center/cover;
+    url("../assets/images/hero-hospital.jpg") center/cover;
 }
 
 .admin-login-card {
