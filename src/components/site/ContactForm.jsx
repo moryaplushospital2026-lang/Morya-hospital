@@ -80,47 +80,14 @@ export function ContactForm({
     setFormData(initialState);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleSubmit = (event) => {
     if (!validateForm()) {
+      event.preventDefault();
       return;
     }
 
     setStatus("loading");
     setError("");
-
-    try {
-      const payload = new FormData();
-      payload.append("access_key", WEB3FORMS_ACCESS_KEY);
-      payload.append("subject", `New contact enquiry from ${site.shortName}`);
-      payload.append("from_name", site.shortName);
-      payload.append("name", formData.name.trim());
-      payload.append("phone", formData.phone.trim());
-      payload.append("email", formData.email.trim() || site.email);
-      payload.append("department", formData.department);
-      payload.append("message", formData.message.trim());
-
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        body: payload,
-      });
-      const result = await response.json();
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Unable to send your message. Please try again.");
-      }
-
-      setStatus("ok");
-      setSuccessMessage({
-        title: "Message sent!",
-        text: "Thank you for contacting us. Our hospital team will get back to you soon.",
-      });
-      setFormData(initialState);
-    } catch (submitError) {
-      event.currentTarget.submit();
-    }
   };
 
   if (status === "ok") {
@@ -152,6 +119,7 @@ export function ContactForm({
       <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
       <input type="hidden" name="subject" value={`New contact enquiry from ${site.shortName}`} />
       <input type="hidden" name="from_name" value={site.shortName} />
+      <input type="checkbox" name="botcheck" className="hidden" tabIndex="-1" autoComplete="off" />
       <input type="hidden" name="redirect" value="https://moryaplushospital.com/contact?submitted=true" />
       <div className="grid gap-4 sm:grid-cols-2">
         <Input
