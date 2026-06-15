@@ -5,6 +5,9 @@ export function NotFoundPage() {
   usePageMeta(
     "Page Not Found | Moryaplus Hospital",
     "The page you are looking for could not be found.",
+    {
+      noindex: true,
+    },
   );
 
   return (

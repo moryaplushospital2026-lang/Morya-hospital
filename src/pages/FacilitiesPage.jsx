@@ -25,6 +25,20 @@ export function FacilitiesPage() {
   usePageMeta(
     "Facilities | Moryaplus Multi Speciality Hospital Kunjirwadi",
     "Modern facilities at Morya Plus Hospital - ICU, modular OT, diagnostics, pharmacy, private rooms and 24x7 ambulance.",
+    {
+      path: "/facilities",
+      keywords:
+        "hospital facilities Kunjirwadi, ICU hospital Kunjirwadi, modular operation theatre Pune, diagnostic centre Kunjirwadi, 24x7 ambulance Kunjirwadi, pharmacy hospital Pune Solapur Highway",
+      schema: {
+        "@type": "MedicalBusiness",
+        name: "Hospital facilities at Morya Plus Hospital",
+        description:
+          "ICU, operation theatre, diagnostics, pharmacy, rooms and ambulance facilities in Kunjirwadi, Pune.",
+        parentOrganization: {
+          "@id": "https://moryaplushospital.com/#hospital",
+        },
+      },
+    },
   );
 
   return (

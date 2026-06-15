@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { PageBanner } from "@/components/site/PageBanner";
 import { site } from "@/data/site";
 import { getBlogPost } from "@/data/blogs";
-import { usePageMeta } from "@/lib/usePageMeta";
+import { getAbsoluteUrl, siteUrl, usePageMeta } from "@/lib/usePageMeta";
 import { mapBlog, usePublicItem } from "@/services/content";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import blogBanner from "@/assets/images/hero-hospital.jpg";
@@ -17,6 +17,30 @@ export function BlogDetailPage() {
       ? `${post.title} | Moryaplus Multi Speciality Hospital`
       : "Blog Not Found | Moryaplus Multi Speciality Hospital",
     post?.description || site.description,
+    {
+      path: post ? `/blog/${post.slug}` : "/blog",
+      keywords: post
+        ? `${post.title}, ${post.category} Kunjirwadi, hospital blog Pune, Morya Plus Hospital blog, healthcare tips Pune`
+        : undefined,
+      image: post?.image,
+      type: "article",
+      noindex: !post && loaded,
+      schema: post
+        ? {
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: post.description || post.excerpt,
+            image: post.image ? getAbsoluteUrl(post.image) : undefined,
+            author: {
+              "@id": `${siteUrl}/#hospital`,
+            },
+            publisher: {
+              "@id": `${siteUrl}/#hospital`,
+            },
+            mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
+          }
+        : undefined,
+    },
   );
 
   if (!post && loaded) {

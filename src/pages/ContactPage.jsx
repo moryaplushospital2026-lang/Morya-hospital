@@ -9,6 +9,19 @@ export function ContactPage() {
   usePageMeta(
     "Contact | Moryaplus Multi Speciality Hospital Kunjirwadi Pune",
     `Contact ${site.name}. Reception: ${site.phones.reception}, Emergency: ${site.phones.emergency}. Kunjirwadi, Pune.`,
+    {
+      path: "/contact",
+      keywords:
+        "Morya Plus Hospital contact number, hospital in Kunjirwadi contact, emergency hospital Kunjirwadi phone number, hospital near Pune Solapur Highway address, Moryaplus Hospital location",
+      schema: {
+        "@type": "ContactPage",
+        name: "Contact Morya Plus Hospital",
+        url: "https://moryaplushospital.com/contact",
+        mainEntity: {
+          "@id": "https://moryaplushospital.com/#hospital",
+        },
+      },
+    },
   );
 
   return (
@@ -48,7 +61,7 @@ export function ContactPage() {
         <div className="rounded-3xl border border-border/70 bg-white p-8 shadow-card">
           <h2 className="font-display text-2xl font-bold">Send us a message</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            We will open WhatsApp with your message. For emergencies please call directly.
+            Send your enquiry to our hospital team. For emergencies please call directly.
           </p>
           <div className="mt-5">
             <ContactForm />

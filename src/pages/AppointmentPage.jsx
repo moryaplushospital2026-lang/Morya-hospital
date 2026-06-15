@@ -9,6 +9,19 @@ export function AppointmentPage() {
   usePageMeta(
     "Book Appointment | Moryaplus Multi Speciality Hospital Kunjirwadi Pune",
     `Book an appointment with ${site.name}. Reception: ${site.phones.reception}. Kunjirwadi, Pune.`,
+    {
+      path: "/appointment",
+      keywords:
+        "book hospital appointment Kunjirwadi, doctor appointment Kunjirwadi Pune, Morya Plus Hospital appointment, online hospital appointment Pune Solapur Highway, emergency appointment Kunjirwadi",
+      schema: {
+        "@type": "Service",
+        name: "Doctor appointment booking",
+        provider: {
+          "@id": "https://moryaplushospital.com/#hospital",
+        },
+        areaServed: "Kunjirwadi, Pune",
+      },
+    },
   );
 
   return (

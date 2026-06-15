@@ -12,6 +12,19 @@ export function BlogPage() {
   usePageMeta(
     "Healthcare Blog | Moryaplus Multi Speciality Hospital, Kunjirwadi Pune",
     "Read SEO-friendly healthcare blogs from Morya Plus Hospital on emergency care, preventive health checkups, and women and child healthcare in Kunjirwadi, Pune.",
+    {
+      path: "/blog",
+      keywords:
+        "healthcare blog Kunjirwadi, hospital health tips Pune, emergency care blog Pune, preventive health checkup Kunjirwadi, women and child healthcare Pune",
+      schema: {
+        "@type": "Blog",
+        name: "Morya Plus Hospital Healthcare Blog",
+        url: "https://moryaplushospital.com/blog",
+        publisher: {
+          "@id": "https://moryaplushospital.com/#hospital",
+        },
+      },
+    },
   );
 
   return (

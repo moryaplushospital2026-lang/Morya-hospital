@@ -1,4 +1,9 @@
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
+function normalizeApiBase(value) {
+  const base = (value || "http://localhost:5001/api").replace(/\/+$/, "");
+  return base.endsWith("/api") ? base : `${base}/api`;
+}
+
+const API_BASE = normalizeApiBase(import.meta.env.VITE_API_URL);
 const UPLOAD_BASE = API_BASE.replace(/\/api\/?$/, "");
 
 export function assetUrl(path) {

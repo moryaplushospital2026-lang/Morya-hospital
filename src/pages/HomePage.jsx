@@ -32,7 +32,7 @@ import {
   whyChooseUs,
 } from "@/data/site";
 import { mapDepartment, mapDoctor, mapFacility, usePublicList } from "@/services/content";
-import { usePageMeta } from "@/lib/usePageMeta";
+import { faqSchema, usePageMeta } from "@/lib/usePageMeta";
 import doctor1Image from "@/assets/images/doctor-1.jpg";
 import doctor2Image from "@/assets/images/doctor-2.jpg";
 import doctor3Image from "@/assets/images/doctor-3.jpg";
@@ -120,8 +120,14 @@ export function HomePage() {
   const facilities = usePublicList("/facilities", fallbackFacilities, mapFacility);
 
   usePageMeta(
-    "Moryaplus Multi Speciality Hospital | Hospital in Kunjirwadi, Pune",
+    "Morya Plus Hospital Kunjirwadi Pune | 24x7 Emergency & Multispeciality Care",
     site.description,
+    {
+      path: "/",
+      keywords:
+        "Morya Plus Hospital, Moryaplus Multi Speciality Hospital, multispeciality hospital in Kunjirwadi Pune, best hospital in Kunjirwadi, emergency hospital Kunjirwadi, ICU hospital Pune Solapur Highway, hospital near Loni Kalbhor, hospital near Uruli Kanchan, cashless hospital Kunjirwadi",
+      schema: faqSchema(faqs),
+    },
   );
 
   return (

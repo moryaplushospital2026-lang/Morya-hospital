@@ -21,6 +21,20 @@ export function DoctorsPage() {
   usePageMeta(
     "Our Doctors & Team | Moryaplus Hospital Kunjirwadi Pune",
     "Meet the experienced consultants and specialists at Morya Plus Multispeciality Hospital, Kunjirwadi.",
+    {
+      path: "/doctors",
+      keywords:
+        "doctors in Kunjirwadi, specialist doctors Kunjirwadi Pune, consultants at Morya Plus Hospital, multispeciality doctors Pune Solapur Highway, emergency doctors Kunjirwadi",
+      schema: doctors.map((doctor) => ({
+        "@type": "Physician",
+        name: doctor.name,
+        medicalSpecialty: doctor.specialty,
+        description: doctor.bio,
+        worksFor: {
+          "@id": "https://moryaplushospital.com/#hospital",
+        },
+      })),
+    },
   );
 
   return (

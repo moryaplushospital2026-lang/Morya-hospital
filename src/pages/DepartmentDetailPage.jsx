@@ -23,6 +23,24 @@ export function DepartmentDetailPage() {
       ? `${department.name} | Moryaplus Hospital Kunjirwadi`
       : "Department Not Found | Moryaplus Hospital",
     department ? department.summary : "The department page you are looking for could not be found.",
+    {
+      path: department ? `/departments/${department.slug}` : "/departments",
+      keywords: department
+        ? `${department.name} in Kunjirwadi, ${department.name} hospital Pune, ${department.name} near Pune Solapur Highway, Morya Plus Hospital ${department.name}, specialist hospital Kunjirwadi`
+        : undefined,
+      noindex: !department && loaded,
+      schema: department
+        ? {
+            "@type": "MedicalProcedure",
+            name: `${department.name} at ${site.shortName}`,
+            description: department.summary,
+            provider: {
+              "@id": "https://moryaplushospital.com/#hospital",
+            },
+            areaServed: "Kunjirwadi, Pune, Maharashtra",
+          }
+        : undefined,
+    },
   );
 
   if (!department && loaded) {

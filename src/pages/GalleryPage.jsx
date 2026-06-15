@@ -34,6 +34,11 @@ export function GalleryPage() {
   usePageMeta(
     "Gallery | Moryaplus Multi Speciality Hospital Kunjirwadi",
     "A visual tour of Morya Plus Hospital - facilities, departments and care moments.",
+    {
+      path: "/gallery",
+      keywords:
+        "Morya Plus Hospital gallery, hospital photos Kunjirwadi, ICU photos Kunjirwadi hospital, hospital facilities images Pune, Moryaplus hospital images",
+    },
   );
 
   const [open, setOpen] = useState(null);

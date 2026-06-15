@@ -2,13 +2,14 @@ import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
 import mysql from "mysql2/promise";
+import { fileURLToPath } from "url";
 
 dotenv.config({ override: true });
 
 const db = process.env.DB_NAME || "morya_plus_hospital";
-const upload = (folder, name) => `/uploads/seed/${folder}/${name}`;
+export const upload = (folder, name) => `/uploads/seed/${folder}/${name}`;
 const image = (name) => upload("images", name);
-const healthInsuranceNames = new Set([
+export const healthInsuranceNames = new Set([
   "Aditya Birla Health Insurance Company Limited",
   "Care Health Insurance Limited",
   "Galaxy Health Insurance Company Limited",
@@ -18,13 +19,14 @@ const healthInsuranceNames = new Set([
   "Star Health Allied Insurance Company Limited",
 ]);
 
-const departments = [
+export const departments = [
   [
     "general-medicine",
     "General Medicine",
     "Comprehensive medical care for adults",
     "Our General Medicine department offers diagnosis, treatment, and prevention of a wide range of adult illnesses with an evidence-based, holistic approach.",
     "Experienced consultant physicians, Chronic disease management (Diabetes, Hypertension, Thyroid), Preventive health screenings, Daily OPD consultations",
+    "Fever & Infections, Diabetes, Hypertension, Thyroid, Asthma & COPD, Lifestyle disorders",
   ],
   [
     "emergency-care",
@@ -32,6 +34,7 @@ const departments = [
     "24/7 emergency response and trauma support",
     "Round-the-clock emergency response with rapid triage, trauma stabilization, advanced life support, and immediate access to critical care services.",
     "24x7 casualty and trauma bay, Emergency trauma management, Rapid triage protocols, On-call multispeciality team",
+    "Trauma & Accidents, Heart Attack, Stroke, Poisoning, Severe Infections, Pediatric Emergencies",
   ],
   [
     "icu-care",
@@ -39,6 +42,7 @@ const departments = [
     "Advanced critical care unit",
     "Fully equipped Intensive Care Unit with multi-parameter monitors, ventilators, and a trained intensivist team delivering round-the-clock critical care.",
     "Ventilator support, Cardiac monitoring, Sepsis management, Post-operative ICU",
+    "Respiratory Failure, Septic Shock, Cardiac Emergencies, Post-Surgical Care",
   ],
   [
     "general-surgery",
@@ -46,6 +50,7 @@ const departments = [
     "Open and laparoscopic surgical care",
     "Our General Surgery team performs a wide range of elective and emergency procedures using modern laparoscopic and minimally invasive techniques.",
     "Laparoscopic Surgery, Hernia & Appendix, Gall Bladder Stones, Day-care Procedures",
+    "Hernia, Appendicitis, Piles & Fissures, Gall Stones, Hydrocele, Abscess",
   ],
   [
     "orthopaedics",
@@ -53,6 +58,7 @@ const departments = [
     "Bone, joint, trauma, and replacement surgery care",
     "Comprehensive orthopedic care including fracture management, joint replacement, sports injuries, arthroscopy, and rehabilitation support by experienced surgeons.",
     "Joint Replacement, Trauma & Fractures, Arthroscopy, Spine Care",
+    "Fractures, Knee & Hip Pain, Arthritis, Sports Injury, Back Pain",
   ],
   [
     "gynaecology",
@@ -60,6 +66,7 @@ const departments = [
     "Women's health, maternity, and obstetric care",
     "Compassionate women's health services covering obstetric care, pregnancy care, painless delivery, gynaec surgeries, and infertility evaluation.",
     "Painless Delivery, Antenatal Care, Laparoscopic Gynaec Surgery, Menstrual Disorders",
+    "Pregnancy Care, PCOD/PCOS, Fibroids, Infertility, Menopause",
   ],
   [
     "paediatrics",
@@ -67,6 +74,7 @@ const departments = [
     "Child health and vaccination",
     "Loving, child-friendly care from newborns to adolescents, including immunisation, growth monitoring, and paediatric emergency care.",
     "Newborn Care (NICU support), Vaccination, Growth & Nutrition, Paediatric ICU",
+    "Fever in Children, Asthma, Diarrhoea, Nutrition Issues, Routine Vaccination",
   ],
   [
     "diagnostics",
@@ -74,6 +82,7 @@ const departments = [
     "Lab, X-ray, Sonography and ECG",
     "In-house diagnostic services with accurate reports and quick turnaround - pathology, radiology, sonography, ECG, and 2D Echo.",
     "Pathology Lab, Digital X-Ray, Sonography, ECG & 2D Echo",
+    "Health Checks, Pre-op Workup, Antenatal Sonography, Routine Blood Tests",
   ],
   [
     "pharmacy",
@@ -81,6 +90,7 @@ const departments = [
     "24x7 in-house medical store",
     "Round-the-clock in-house pharmacy stocking genuine medicines, surgical consumables, and emergency drugs at affordable prices.",
     "24x7 Availability, Genuine Branded Medicines, Affordable Pricing, Home Delivery (local)",
+    "Prescription Medicines, Surgical Items, First Aid, Wellness Products",
   ],
   [
     "neurology-neuro-surgery",
@@ -88,6 +98,7 @@ const departments = [
     "Brain, spine, nerve, and neuro-trauma care",
     "Specialized neurology and neuro surgery care for disorders of the brain, spine, and nervous system with emergency evaluation and advanced treatment planning.",
     "Stroke Evaluation, Neuro-trauma Care, Spine & Nerve Disorder Management, Neuro Surgery Consultation",
+    "Stroke, Seizures, Head Injury, Spine Disorders, Neuropathy",
   ],
   [
     "urology-nephrology",
@@ -95,6 +106,7 @@ const departments = [
     "Kidney, urinary tract, and renal care",
     "Comprehensive urology and nephrology services for kidney health, urinary tract disorders, stone disease, and long-term renal care.",
     "Kidney Stone Management, Urinary Tract Care, Renal Function Evaluation, Chronic Kidney Disease Support",
+    "Kidney Stones, UTI, Prostate Concerns, Kidney Disease, Urinary Retention",
   ],
   [
     "oncology-oncology-surgery",
@@ -102,6 +114,7 @@ const departments = [
     "Cancer diagnosis, treatment guidance, and surgical care",
     "Dedicated oncology and oncology surgery services focused on cancer screening, diagnosis, treatment planning, and surgical management with multidisciplinary support.",
     "Cancer Screening Guidance, Oncology Consultation, Tumor Surgery Planning, Multidisciplinary Care Support",
+    "Breast Lumps, GI Tumors, Head & Neck Tumors, Soft Tissue Masses, Cancer Follow-up",
   ],
   [
     "health-checkups",
@@ -109,10 +122,11 @@ const departments = [
     "Preventive wellness packages",
     "Affordable preventive health check packages for individuals, families, and corporates - designed by our physicians for early detection.",
     "Basic, Executive & Master Packages, Diabetes & Cardiac Profile, Whole-body Screening, Corporate Packages",
+    "Annual Checkup, Pre-Employment, Cardiac Risk, Diabetes Screening",
   ],
 ];
 
-const facilities = [
+export const facilities = [
   ["ICU & Critical Care", image("facility-icu.jpg"), "Ventilator, monitors, intensivist-led team."],
   [
     "Modular Operation Theatre",
@@ -141,7 +155,7 @@ const facilities = [
   ],
 ];
 
-const doctors = [
+export const doctors = [
   [
     "Dr. Yajinesh Kidiyoor",
     "Consultant Physician",
@@ -234,7 +248,7 @@ const doctors = [
   ],
 ];
 
-const blogs = [
+export const blogs = [
   [
     "emergency-care-kunjirwadi-pune",
     "When to Choose an Emergency Hospital in Kunjirwadi, Pune",
@@ -244,6 +258,8 @@ const blogs = [
     [
       "Choosing the right emergency hospital in Kunjirwadi, Pune can save valuable time when a patient is facing chest pain, severe breathing difficulty, trauma, high fever with confusion, sudden weakness, seizures, or uncontrolled bleeding. In these situations, rapid diagnosis and stabilisation matter more than waiting for routine consultation hours.",
       "A multispeciality hospital with 24x7 emergency services, ICU support, ambulance access, diagnostics, and specialist backup helps reduce delays in treatment. Families often search for terms like best emergency hospital near Pune-Solapur Highway or 24x7 hospital in Kunjirwadi because proximity and readiness are both essential during urgent care.",
+      "Immediate emergency evaluation is especially important when symptoms are sudden, severe, or life-threatening. Even a short delay can affect treatment decisions in cases like stroke, severe infection, head injury, or heart-related emergencies.",
+      "Patients and families should also consider whether a hospital can provide quick imaging, pathology, pharmacy access, and referral support without requiring transfers to multiple locations. A single coordinated care setting is often more reassuring during stressful emergencies.",
       "At Morya Plus Hospital, patients can access emergency evaluation, critical care support, in-house diagnostics, and coordinated treatment under one roof. If you notice symptoms that feel urgent or dangerous, calling emergency support immediately is the safest next step.",
     ],
   ],
@@ -254,9 +270,11 @@ const blogs = [
     "Preventive screening helps detect diabetes, blood pressure, thyroid issues, and heart risk factors early, often before symptoms become serious.",
     "Discover why regular health checkups in Pune help detect diabetes, hypertension, thyroid issues, and cardiac risk factors before complications grow.",
     [
-      "Regular preventive health checkups are one of the most effective ways to protect long-term wellness. Many common conditions such as diabetes, hypertension, thyroid disorders, kidney concerns, and cholesterol imbalance can develop silently.",
-      "People living around Kunjirwadi and the Pune-Solapur Highway often look for affordable health checkups in Pune that are nearby, reliable, and easy to access.",
-      "At Morya Plus Hospital, preventive care is designed to support individuals, working professionals, senior citizens, and families who want early detection and practical guidance.",
+      "Regular preventive health checkups are one of the most effective ways to protect long-term wellness. Many common conditions such as diabetes, hypertension, thyroid disorders, kidney concerns, and cholesterol imbalance can develop silently. By the time symptoms appear, treatment may become more complex and more expensive.",
+      "People living around Kunjirwadi and the Pune-Solapur Highway often look for affordable health checkups in Pune that are nearby, reliable, and easy to access. A good checkup program should include physician review, pathology tests, blood sugar screening, blood pressure evaluation, and condition-based diagnostics depending on age and medical history.",
+      "Preventive screening is useful not only for senior citizens but also for working adults, people with a family history of chronic disease, and anyone managing stress, irregular sleep, sedentary habits, or weight changes. Early detection gives patients more treatment options and more time to act.",
+      "Health checkups also support better conversations with doctors. Instead of waiting for a major symptom, patients can track trends, understand risk factors, and receive practical guidance on nutrition, medication, exercise, and follow-up care.",
+      "At Morya Plus Hospital, preventive care is designed to support individuals, working professionals, senior citizens, and families who want early detection and practical guidance. Annual screenings can help doctors identify risks sooner and create a treatment or lifestyle plan before complications develop.",
     ],
   ],
   [
@@ -266,14 +284,16 @@ const blogs = [
     "From pregnancy care and gynaecology consultations to paediatric support and vaccinations, coordinated family care makes treatment more reassuring.",
     "Explore trusted women and child healthcare in Kunjirwadi, including pregnancy care, gynaecology support, paediatric consultation, and family-focused treatment.",
     [
-      "Women and child healthcare needs often change quickly, whether a family is planning pregnancy, managing antenatal visits, seeking delivery support, addressing menstrual concerns, or booking routine paediatric care.",
-      "Patients commonly search for gynaecologist in Kunjirwadi, pregnancy hospital in Pune, or child specialist near Pune-Solapur Highway when they want experienced consultation close to home.",
-      "At Morya Plus Hospital, women and child services are supported by consultation, diagnostics, treatment planning, and compassionate communication.",
+      "Women and child healthcare needs often change quickly, whether a family is planning pregnancy, managing antenatal visits, seeking delivery support, addressing menstrual concerns, or booking routine paediatric care. Choosing a hospital with both gynaecology and paediatrics under one roof can make care more consistent and less stressful for families.",
+      "Patients commonly search for gynaecologist in Kunjirwadi, pregnancy hospital in Pune, or child specialist near Pune-Solapur Highway when they want experienced consultation close to home. Access to diagnostics, emergency backup, and specialist referrals within the same hospital also improves convenience during follow-up visits and urgent situations.",
+      "For mothers, continuity of care matters from early pregnancy through postnatal recovery. For children, timely consultation, vaccination guidance, nutrition review, and fever management can help prevent avoidable complications and reduce family anxiety.",
+      "Hospitals that offer coordinated care also make it easier for families to manage appointments, diagnostic tests, and follow-up plans without confusion. This becomes especially valuable when a mother or child needs repeated monitoring over time.",
+      "At Morya Plus Hospital, women and child services are supported by consultation, diagnostics, treatment planning, and compassionate communication. This helps families feel informed and supported from routine care to more advanced medical needs.",
     ],
   ],
 ];
 
-function displayName(fileName) {
+export function displayName(fileName) {
   return fileName.replace(/\.[^.]+$/, "").replaceAll("_", " ");
 }
 
@@ -305,13 +325,14 @@ async function main() {
     database: db,
   });
 
-  for (const [slug, name, short, full, facilitiesText] of departments) {
+  for (const [slug, name, short, full, facilitiesText, conditions] of departments) {
     await upsertByKey(conn, "departments", "slug", slug, {
       slug,
       name,
       short_description: short,
       full_content: full,
       facilities: facilitiesText,
+      conditions,
       status: "Active",
     });
   }
@@ -401,7 +422,11 @@ async function main() {
   await conn.end();
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+const isDirectRun = process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+
+if (isDirectRun) {
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

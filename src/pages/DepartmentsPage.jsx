@@ -12,6 +12,11 @@ export function DepartmentsPage() {
   usePageMeta(
     "Departments & Specialities | Moryaplus Hospital Kunjirwadi",
     "Explore 11+ departments including Emergency, ICU, Surgery, Orthopaedics, Gynaecology, Paediatrics, Diagnostics and more at Morya Plus Hospital.",
+    {
+      path: "/departments",
+      keywords:
+        "hospital departments in Kunjirwadi, emergency department Kunjirwadi, ICU Pune Solapur Highway, surgery hospital Kunjirwadi, orthopaedic hospital Kunjirwadi, gynaecology hospital Kunjirwadi, paediatric hospital Pune",
+    },
   );
 
   return (

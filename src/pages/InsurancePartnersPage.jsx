@@ -78,6 +78,21 @@ export function InsurancePartnersPage() {
   usePageMeta(
     "Insurance & Cashless Partners | Moryaplus Hospital Kunjirwadi Pune",
     `Browse insurance and cashless support partners available through ${site.shortName}.`,
+    {
+      path: "/insurance-partners",
+      keywords:
+        "cashless hospital Kunjirwadi, insurance hospital Pune Solapur Highway, health insurance hospital Kunjirwadi, cashless mediclaim hospital Pune, Morya Plus Hospital insurance partners",
+      schema: {
+        "@type": "Service",
+        name: "Cashless insurance support",
+        description:
+          "Insurance documentation and cashless treatment coordination support at Morya Plus Hospital.",
+        provider: {
+          "@id": "https://moryaplushospital.com/#hospital",
+        },
+        areaServed: "Kunjirwadi, Pune",
+      },
+    },
   );
 
   return (
