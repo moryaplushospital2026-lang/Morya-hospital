@@ -22,16 +22,17 @@ import { useAppointmentModal } from "@/components/site/AppointmentModalContext";
 import { Counter } from "@/components/site/Counter";
 import { insuranceLogos } from "@/data/insuranceLogos";
 import {
-  departments,
-  doctors,
+  departments as fallbackDepartments,
+  doctors as fallbackDoctors,
   faqs,
-  facilities,
+  facilities as fallbackFacilities,
   site,
   stats,
   testimonials,
   whyChooseUs,
 } from "@/data/site";
-import { usePageMeta } from "@/lib/usePageMeta";
+import { mapDepartment, mapDoctor, mapFacility, usePublicList } from "@/services/content";
+import { faqSchema, usePageMeta } from "@/lib/usePageMeta";
 import doctor1Image from "@/assets/images/doctor-1.jpg";
 import doctor2Image from "@/assets/images/doctor-2.jpg";
 import doctor3Image from "@/assets/images/doctor-3.jpg";
@@ -47,7 +48,7 @@ import facilityReception from "@/assets/images/facility-reception.jpg";
 import facilityRoom from "@/assets/images/facility-room.jpg";
 import heroDoctors from "@/assets/images/hero-doctors.jpg";
 import heroEmergency from "@/assets/images/hero-emergency.jpg";
-import heroHospital from "@/assets/images/moryahplushospital.png";
+import heroHospital from "@/assets/images/hero-hospital.jpg";
 
 const facilityImages = {
   icu: facilityIcu,
@@ -120,10 +121,19 @@ const packageItems = [
 
 export function HomePage() {
   const { openAppointment } = useAppointmentModal();
+  const departments = usePublicList("/departments", fallbackDepartments, mapDepartment);
+  const doctors = usePublicList("/doctors", fallbackDoctors, mapDoctor);
+  const facilities = usePublicList("/facilities", fallbackFacilities, mapFacility);
 
   usePageMeta(
-    "Moryaplus Multi Speciality Hospital | Hospital in Kunjirwadi, Pune",
+    "Morya Plus Hospital Kunjirwadi Pune | 24x7 Emergency & Multispeciality Care",
     site.description,
+    {
+      path: "/",
+      keywords:
+        "Morya Plus Hospital, Moryaplus Multi Speciality Hospital, multispeciality hospital in Kunjirwadi Pune, best hospital in Kunjirwadi, emergency hospital Kunjirwadi, ICU hospital Pune Solapur Highway, hospital near Loni Kalbhor, hospital near Uruli Kanchan, cashless hospital Kunjirwadi",
+      schema: faqSchema(faqs),
+    },
   );
 
   return (
@@ -134,9 +144,9 @@ export function HomePage() {
       <About />
       <StatsSection />
       <PackagesSection />
-      <DepartmentsSection />
-      <DoctorsSpotlightSection onOpenAppointment={openAppointment} />
-      <FacilitiesSection />
+      <DepartmentsSection departments={departments} />
+      <DoctorsSpotlightSection doctors={doctors} onOpenAppointment={openAppointment} />
+      <FacilitiesSection facilities={facilities} />
       <WhyChooseUsSection />
       <EmergencySection />
       <InsuranceSection />
@@ -160,22 +170,17 @@ function Hero() {
 
   return (
     <section className="relative h-[78vh] min-h-[560px] w-full overflow-hidden">
-      {slides.map((slide, slideIndex) => (
-        <div
-          key={slide.title}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === slideIndex ? "opacity-100" : "opacity-0"
-          }`}
-          aria-hidden={index !== slideIndex}
-        >
-          <img
-            src={slide.img}
-            alt={slide.title}
-            className={`h-full w-full ${slide.imgClassName ?? "object-cover"}`}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.2_0.05_250/.85)] via-[oklch(0.2_0.05_250/.55)] to-transparent" />
-        </div>
-      ))}
+      <div className="absolute inset-0 transition-opacity duration-700">
+        <img
+          src={slides[index].img}
+          alt={slides[index].title}
+          className={`h-full w-full ${slides[index].imgClassName ?? "object-cover"}`}
+          loading={index === 0 ? "eager" : "lazy"}
+          fetchPriority={index === 0 ? "high" : "auto"}
+          decoding="async"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.2_0.05_250/.85)] via-[oklch(0.2_0.05_250/.55)] to-transparent" />
+      </div>
 
       <div className="container-x relative flex h-full items-center">
         <div className="fade-up max-w-2xl text-white" key={slides[index].title}>
@@ -485,7 +490,7 @@ function PackagesSection() {
   );
 }
 
-function DepartmentsSection() {
+function DepartmentsSection({ departments }) {
   return (
     <section className="container-x py-16">
       <SectionTitle
@@ -524,7 +529,7 @@ function DepartmentsSection() {
   );
 }
 
-function DoctorsSpotlightSection({ onOpenAppointment }) {
+function DoctorsSpotlightSection({ doctors, onOpenAppointment }) {
   return (
     <section className="bg-brand-soft py-16">
       <div className="container-x">
@@ -540,10 +545,10 @@ function DoctorsSpotlightSection({ onOpenAppointment }) {
               key={doctor.name}
               className="overflow-hidden rounded-2xl bg-white shadow-card transition hover:shadow-soft"
             >
-              {doctor.img ? (
+              {doctor.image || doctorImages[doctor.img] ? (
                 <div className="aspect-[4/5] overflow-hidden">
                   <img
-                    src={doctorImages[doctor.img]}
+                    src={doctor.image || doctorImages[doctor.img]}
                     alt={doctor.name}
                     className="h-full w-full object-cover transition duration-500 hover:scale-105"
                     loading="lazy"
@@ -589,7 +594,7 @@ function DoctorsSpotlightSection({ onOpenAppointment }) {
   );
 }
 
-function FacilitiesSection() {
+function FacilitiesSection({ facilities }) {
   return (
     <section className="bg-muted/40 py-16">
       <div className="container-x">
@@ -607,7 +612,7 @@ function FacilitiesSection() {
             >
               <div className="aspect-[4/3] overflow-hidden">
                 <img
-                  src={facilityImages[facility.img]}
+                  src={facility.image || facilityImages[facility.img]}
                   alt={facility.name}
                   className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   loading="lazy"

@@ -1,6 +1,7 @@
 import { PageBanner } from "@/components/site/PageBanner";
-import { doctors } from "@/data/site";
+import { doctors as fallbackDoctors } from "@/data/site";
 import { usePageMeta } from "@/lib/usePageMeta";
+import { mapDoctor, usePublicList } from "@/services/content";
 import d1 from "@/assets/images/doctor-1.jpg";
 import d2 from "@/assets/images/doctor-2.jpg";
 import d3 from "@/assets/images/doctor-3.jpg";
@@ -8,7 +9,7 @@ import d4 from "@/assets/images/doctor-4.jpg";
 import drHarshadHon from "@/assets/Doctor-images/Dr. Harshad Hon.jpeg";
 import drPratikMemane from "@/assets/Doctor-images/Pratik memane.jpeg";
 import drSwapnilBagdure from "@/assets/Doctor-images/Swapnil-bagdure.jpeg";
-import doctorsBanner from "@/assets/images/moryahplushospital.png";
+import doctorsBanner from "@/assets/images/hero-hospital.jpg";
 
 const images = {
   "doctor-1": d1,
@@ -21,9 +22,25 @@ const images = {
 };
 
 export function DoctorsPage() {
+  const doctors = usePublicList("/doctors", fallbackDoctors, mapDoctor);
+
   usePageMeta(
     "Our Doctors & Team | Moryaplus Hospital Kunjirwadi Pune",
     "Meet the experienced consultants and specialists at Morya Plus Multispeciality Hospital, Kunjirwadi.",
+    {
+      path: "/doctors",
+      keywords:
+        "doctors in Kunjirwadi, specialist doctors Kunjirwadi Pune, consultants at Morya Plus Hospital, multispeciality doctors Pune Solapur Highway, emergency doctors Kunjirwadi",
+      schema: doctors.map((doctor) => ({
+        "@type": "Physician",
+        name: doctor.name,
+        medicalSpecialty: doctor.specialty,
+        description: doctor.bio,
+        worksFor: {
+          "@id": "https://moryaplushospital.com/#hospital",
+        },
+      })),
+    },
   );
 
   return (
@@ -42,10 +59,10 @@ export function DoctorsPage() {
               key={doctor.name}
               className="overflow-hidden rounded-2xl bg-white shadow-card transition hover:shadow-soft"
             >
-              {doctor.img ? (
+              {doctor.image || images[doctor.img] ? (
                 <div className="aspect-[4/5] overflow-hidden">
                   <img
-                    src={images[doctor.img]}
+                    src={doctor.image || images[doctor.img]}
                     alt={doctor.name}
                     className="h-full w-full object-cover transition duration-500 hover:scale-105"
                     loading="lazy"

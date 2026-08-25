@@ -3,30 +3,58 @@ import { Link, useParams } from "react-router-dom";
 import { PageBanner } from "@/components/site/PageBanner";
 import { site } from "@/data/site";
 import { getBlogPost } from "@/data/blogs";
-import { usePageMeta } from "@/lib/usePageMeta";
+import { getAbsoluteUrl, siteUrl, usePageMeta } from "@/lib/usePageMeta";
+import { mapBlog, usePublicItem } from "@/services/content";
 import { NotFoundPage } from "@/pages/NotFoundPage";
+import blogBanner from "@/assets/images/hero-hospital.jpg";
 
 export function BlogDetailPage() {
   const { slug } = useParams();
-  const post = getBlogPost(slug);
+  const [post, loaded] = usePublicItem(`/blogs/${slug}`, getBlogPost(slug), mapBlog);
 
   usePageMeta(
     post
       ? `${post.title} | Moryaplus Multi Speciality Hospital`
       : "Blog Not Found | Moryaplus Multi Speciality Hospital",
     post?.description || site.description,
+    {
+      path: post ? `/blog/${post.slug}` : "/blog",
+      keywords: post
+        ? `${post.title}, ${post.category} Kunjirwadi, hospital blog Pune, Morya Plus Hospital blog, healthcare tips Pune`
+        : undefined,
+      image: post?.image,
+      type: "article",
+      noindex: !post && loaded,
+      schema: post
+        ? {
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: post.description || post.excerpt,
+            image: post.image ? getAbsoluteUrl(post.image) : undefined,
+            author: {
+              "@id": `${siteUrl}/#hospital`,
+            },
+            publisher: {
+              "@id": `${siteUrl}/#hospital`,
+            },
+            mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
+          }
+        : undefined,
+    },
   );
 
-  if (!post) {
+  if (!post && loaded) {
     return <NotFoundPage />;
   }
+
+  if (!post) return null;
 
   return (
     <>
       <PageBanner
         title={post.title}
         subtitle={post.excerpt}
-        image={post.image}
+        image={post.image || blogBanner}
         crumbs={[{ label: "Blog", to: "/blog" }, { label: post.category }]}
         imageClassName="object-center"
       />
@@ -43,7 +71,7 @@ export function BlogDetailPage() {
 
           <div className="mt-6 overflow-hidden rounded-[2rem] border border-border/70 bg-white shadow-card">
             <img
-              src={post.image}
+              src={post.image || blogBanner}
               alt={post.imageAlt}
               className={`h-[260px] w-full object-cover sm:h-[340px] lg:h-[420px] ${post.imageClassName || "object-center"}`}
             />

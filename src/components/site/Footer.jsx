@@ -9,7 +9,15 @@ export function Footer() {
       <div className="container-x grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="flex items-center gap-3">
-            <img src={logo} alt="Moryaplus" className="h-12 w-auto rounded-lg bg-white p-1" />
+            <img
+              src={logo}
+              alt="Moryaplus"
+              width="270"
+              height="95"
+              loading="lazy"
+              decoding="async"
+              className="h-12 w-auto rounded-lg bg-white p-1"
+            />
           </div>
           <p className="mt-4 text-sm text-white/70">
             Committed to providing high-quality, affordable, and patient-centered healthcare under

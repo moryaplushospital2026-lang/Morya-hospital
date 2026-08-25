@@ -41,6 +41,11 @@ export function AboutPage() {
   usePageMeta(
     "About Us | Moryaplus Multi Speciality Hospital, Kunjirwadi Pune",
     `Learn about ${site.name} - our vision, mission, and commitment to compassionate, affordable healthcare in Kunjirwadi, Pune.`,
+    {
+      path: "/about",
+      keywords:
+        "about Morya Plus Hospital, multispeciality hospital Kunjirwadi, affordable hospital Pune Solapur Highway, patient centered hospital Pune, Moryaplus Hospital Pune",
+    },
   );
 
   return (

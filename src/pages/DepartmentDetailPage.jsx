@@ -4,24 +4,50 @@ import { useAppointmentModal } from "@/components/site/AppointmentModalContext";
 import { PageBanner } from "@/components/site/PageBanner";
 import { departments, site } from "@/data/site";
 import { usePageMeta } from "@/lib/usePageMeta";
+import { mapDepartment, usePublicItem } from "@/services/content";
 import departmentBanner from "@/assets/images/hero-doctors.jpg";
 import { NotFoundPage } from "./NotFoundPage";
 
 export function DepartmentDetailPage() {
   const { slug } = useParams();
   const { openAppointment } = useAppointmentModal();
-  const department = departments.find((item) => item.slug === slug);
+  const fallbackDepartment = departments.find((item) => item.slug === slug);
+  const [department, loaded] = usePublicItem(
+    `/departments/${slug}`,
+    fallbackDepartment,
+    mapDepartment,
+  );
 
   usePageMeta(
     department
       ? `${department.name} | Moryaplus Hospital Kunjirwadi`
       : "Department Not Found | Moryaplus Hospital",
     department ? department.summary : "The department page you are looking for could not be found.",
+    {
+      path: department ? `/departments/${department.slug}` : "/departments",
+      keywords: department
+        ? `${department.name} in Kunjirwadi, ${department.name} hospital Pune, ${department.name} near Pune Solapur Highway, Morya Plus Hospital ${department.name}, specialist hospital Kunjirwadi`
+        : undefined,
+      noindex: !department && loaded,
+      schema: department
+        ? {
+            "@type": "MedicalProcedure",
+            name: `${department.name} at ${site.shortName}`,
+            description: department.summary,
+            provider: {
+              "@id": "https://moryaplushospital.com/#hospital",
+            },
+            areaServed: "Kunjirwadi, Pune, Maharashtra",
+          }
+        : undefined,
+    },
   );
 
-  if (!department) {
+  if (!department && loaded) {
     return <NotFoundPage />;
   }
+
+  if (!department) return null;
 
   const Icon = department.icon;
 
@@ -55,19 +81,6 @@ export function DepartmentDetailPage() {
             </ul>
           </div>
 
-          <div className="rounded-3xl border border-border/70 bg-white p-8 shadow-card">
-            <h3 className="font-display text-xl font-bold">Common conditions treated</h3>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {department.conditions.map((condition) => (
-                <span
-                  key={condition}
-                  className="rounded-full bg-brand-soft px-3 py-1.5 text-xs font-medium text-brand"
-                >
-                  {condition}
-                </span>
-              ))}
-            </div>
-          </div>
         </div>
 
         <aside className="space-y-5">

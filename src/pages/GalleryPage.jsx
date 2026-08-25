@@ -1,13 +1,26 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { X } from "lucide-react";
 import { PageBanner } from "@/components/site/PageBanner";
 import { usePageMeta } from "@/lib/usePageMeta";
+import { mapGallery, usePublicList } from "@/services/content";
 import galleryBanner from "@/assets/images/WhatsApp Image 2026-05-26 at 5.41.16 PM (2).jpeg";
 
-const imageModules = import.meta.glob("../assets/images/*.{jpg,jpeg,png,JPG,JPEG,PNG}", {
-  eager: true,
-  import: "default",
-});
+const imageModules = import.meta.glob(
+  [
+    "../assets/images/*.{jpg,jpeg,png,JPG,JPEG,PNG}",
+    "!../assets/images/gallery-*.{jpg,jpeg,png,JPG,JPEG,PNG}",
+    "!../assets/images/facility-*.{jpg,jpeg,png,JPG,JPEG,PNG}",
+    "!../assets/images/doctor-*.{jpg,jpeg,png,JPG,JPEG,PNG}",
+    "!../assets/images/hero-*.{jpg,jpeg,png,JPG,JPEG,PNG}",
+    "!../assets/images/moryahospital.png",
+    "!../assets/images/moryahplushospital.png",
+    "!../assets/images/WhatsApp Image 2026-05-26 at 5.41.16 PM (2).jpeg",
+  ],
+  {
+    eager: true,
+    import: "default",
+  },
+);
 
 const excludedImagePatterns = [
   /^WhatsApp Image 2026-05-26 at 5\.41\.16 PM \(2\)\.jpeg$/i,
@@ -33,19 +46,29 @@ export function GalleryPage() {
   usePageMeta(
     "Gallery | Moryaplus Multi Speciality Hospital Kunjirwadi",
     "A visual tour of Morya Plus Hospital - facilities, departments and care moments.",
+    {
+      path: "/gallery",
+      keywords:
+        "Morya Plus Hospital gallery, hospital photos Kunjirwadi, ICU photos Kunjirwadi hospital, hospital facilities images Pune, Moryaplus hospital images",
+    },
   );
 
   const [open, setOpen] = useState(null);
-  const images = Object.entries(imageModules)
-    .sort(([left], [right]) => left.localeCompare(right))
-    .filter(([path]) => {
-      const fileName = path.split("/").pop() || "";
-      return !excludedImagePatterns.some((pattern) => pattern.test(fileName));
-    })
-    .map(([path, src]) => ({
-      src,
-      alt: prettyAltFromPath(path),
-    }));
+  const fallbackImages = useMemo(
+    () =>
+      Object.entries(imageModules)
+        .sort(([left], [right]) => left.localeCompare(right))
+        .filter(([path]) => {
+          const fileName = path.split("/").pop() || "";
+          return !excludedImagePatterns.some((pattern) => pattern.test(fileName));
+        })
+        .map(([path, src]) => ({
+          src,
+          alt: prettyAltFromPath(path),
+        })),
+    [],
+  );
+  const images = usePublicList("/gallery", fallbackImages, mapGallery);
 
   return (
     <>

@@ -8,6 +8,7 @@ export function PageBanner({ title, subtitle, crumbs, image, imageClassName = ""
           src={image}
           alt=""
           aria-hidden
+          decoding="async"
           className={`absolute inset-0 h-full w-full object-cover ${imageClassName}`}
         />
       ) : null}
