@@ -1,6 +1,7 @@
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="64" height="64" rx="16" fill="#FC5A03"/>
-  <path d="M32 10v35M19 28h26M22 18h20M22 38h20" stroke="white" stroke-width="4" stroke-linecap="round"/>
-  <circle cx="32" cy="28" r="7" fill="#FFB26B"/>
-  <path d="M18 51h28" stroke="white" stroke-width="4" stroke-linecap="round"/>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Morya Plus Hospital">
+  <rect width="64" height="64" rx="14" fill="white"/>
+  <rect x="15" y="10" width="34" height="44" rx="16" fill="#FC5A03"/>
+  <path d="M32 8v48M15 34h34M20 19h24M20 44h24" stroke="#D94000" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="32" cy="31" r="8" fill="#FF7A1A"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="13" stroke="#FC5A03" stroke-width="3"/>
 </svg>
