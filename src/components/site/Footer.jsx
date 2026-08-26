@@ -124,8 +124,16 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-x py-5 text-center text-xs text-white/60">
-          &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
+        <div className="container-x flex flex-col items-center justify-between gap-2 py-5 text-center text-xs text-white/60 sm:flex-row sm:text-left">
+          <span>&copy; {new Date().getFullYear()} {site.name}. All rights reserved.</span>
+          <a
+            href="https://webakoof.com"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="hover:text-white hover:underline"
+          >
+            Designed by Webakoof
+          </a>
         </div>
       </div>
     </footer>
