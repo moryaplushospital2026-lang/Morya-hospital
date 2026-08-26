@@ -46,7 +46,7 @@ import facilityOt from "@/assets/images/facility-ot.jpg";
 import facilityPharmacy from "@/assets/images/facility-pharmacy.jpg";
 import facilityReception from "@/assets/images/facility-reception.jpg";
 import facilityRoom from "@/assets/images/facility-room.jpg";
-import heroDoctors from "@/assets/images/hero-doctors.jpg";
+import heroDoctors from "@/assets/images/hero-doctors.png";
 import heroEmergency from "@/assets/images/hero-emergency.jpg";
 import heroHospital from "@/assets/images/moryahplushospital.png";
 

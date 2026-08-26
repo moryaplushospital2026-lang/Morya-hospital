@@ -5,7 +5,7 @@ import { PageBanner } from "@/components/site/PageBanner";
 import { departments, site } from "@/data/site";
 import { usePageMeta } from "@/lib/usePageMeta";
 import { mapDepartment, usePublicItem } from "@/services/content";
-import departmentBanner from "@/assets/images/hero-doctors.jpg";
+import departmentBanner from "@/assets/images/hero-doctors.png";
 import { NotFoundPage } from "./NotFoundPage";
 
 export function DepartmentDetailPage() {

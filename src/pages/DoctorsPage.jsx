@@ -9,7 +9,7 @@ import d4 from "@/assets/images/doctor-4.jpg";
 import drHarshadHon from "@/assets/Doctor-images/Dr. Harshad Hon.jpeg";
 import drPratikMemane from "@/assets/Doctor-images/Pratik memane.jpeg";
 import drSwapnilBagdure from "@/assets/Doctor-images/Swapnil-bagdure.jpeg";
-import doctorsBanner from "@/assets/images/moryahplushospital.png";
+import doctorsBanner from "@/assets/images/hero-doctors.png";
 
 const images = {
   "doctor-1": d1,
