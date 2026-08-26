@@ -48,7 +48,7 @@ import facilityReception from "@/assets/images/facility-reception.jpg";
 import facilityRoom from "@/assets/images/facility-room.jpg";
 import heroDoctors from "@/assets/images/hero-doctors.jpg";
 import heroEmergency from "@/assets/images/hero-emergency.jpg";
-import heroHospital from "@/assets/images/hero-hospital.jpg";
+import heroHospital from "@/assets/images/moryahplushospital.png";
 
 const facilityImages = {
   icu: facilityIcu,
