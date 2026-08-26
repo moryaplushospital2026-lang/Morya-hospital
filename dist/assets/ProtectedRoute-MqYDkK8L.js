@@ -1,1 +1,0 @@
-import{j as e,a as o}from"./index-BaV01Il7.js";function n({children:t}){return localStorage.getItem("morya_admin_token")?t:e.jsx(o,{to:"/morya_plus_the_admin_access_mp/login",replace:!0})}export{n as ProtectedRoute};

@@ -12,12 +12,19 @@ const app = express();
 const port = process.env.PORT || 5001;
 const host = process.env.HOST || "127.0.0.1";
 
+const configuredOrigins = [process.env.CLIENT_URL, process.env.ALLOWED_ORIGINS]
+  .filter(Boolean)
+  .flatMap((value) => value.split(",").map((origin) => origin.trim()))
+  .filter(Boolean);
+
 const allowedOrigins = new Set([
-  process.env.CLIENT_URL,
+  "https://moryaplushospital.com",
+  "https://www.moryaplushospital.com",
   "http://127.0.0.1:5175",
   "http://localhost:5175",
   "http://127.0.0.1:5173",
   "http://localhost:5173",
+  ...configuredOrigins,
 ]);
 
 app.use(
@@ -27,8 +34,9 @@ app.use(
         callback(null, true);
         return;
       }
-      callback(new Error(`CORS blocked origin: ${origin}`));
+      callback(null, false);
     },
+    optionsSuccessStatus: 204,
   }),
 );
 app.use(express.json({ limit: "2mb" }));

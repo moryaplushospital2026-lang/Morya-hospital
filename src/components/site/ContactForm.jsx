@@ -65,9 +65,11 @@ export function ContactForm({
     }
 
     const url = buildWhatsAppUrl(site.whatsapp, formData);
-    const popup = window.open(url, "_blank", "noopener,noreferrer");
+    const popup = window.open(url, "_blank");
 
-    if (!popup) {
+    if (popup) {
+      popup.opener = null;
+    } else {
       window.location.href = url;
     }
 
