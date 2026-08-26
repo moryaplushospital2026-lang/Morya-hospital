@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /morya_plus_the_admin_access_mp/
+
+Sitemap: https://moryaplushospital.com/sitemap.xml
