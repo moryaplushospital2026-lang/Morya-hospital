@@ -6,10 +6,10 @@ import d1 from "@/assets/images/doctor-1.jpg";
 import d2 from "@/assets/images/doctor-2.jpg";
 import d3 from "@/assets/images/doctor-3.jpg";
 import d4 from "@/assets/images/doctor-4.jpg";
-import drHarshadHon from "@/assets/Doctor-images/Dr. Harshad Hon.jpeg";
-import drPratikMemane from "@/assets/Doctor-images/Pratik memane.jpeg";
-import drSwapnilBagdure from "@/assets/Doctor-images/Swapnil-bagdure.jpeg";
-import doctorsBanner from "@/assets/images/hero-doctors.png";
+import drHarshadHon from "@/assets/optimized/Dr. Harshad Hon.webp";
+import drPratikMemane from "@/assets/optimized/Pratik memane.webp";
+import drSwapnilBagdure from "@/assets/optimized/Swapnil-bagdure.webp";
+import doctorsBanner from "@/assets/optimized/hero-doctors.webp";
 
 const images = {
   "doctor-1": d1,

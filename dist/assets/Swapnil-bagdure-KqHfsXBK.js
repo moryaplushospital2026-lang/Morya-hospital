@@ -1,1 +1,0 @@
-const s="/assets/doctor-1-BhA_8E_1.jpg",a="/assets/doctor-2-B1EuU5fZ.jpg",o="/assets/doctor-3-iovfG4Y5.jpg",t="/assets/doctor-4-CpR2CT67.jpg",e="/assets/Dr.%20Harshad%20Hon-BQ95Psgj.jpeg",r="/assets/Pratik%20memane-DO5sVeQR.jpeg",c="/assets/Swapnil-bagdure-DtFOxXXA.jpeg";export{r as a,e as b,t as c,c as d,o as e,a as f,s as g};

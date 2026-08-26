@@ -3,7 +3,7 @@ import { AppointmentForm } from "@/components/site/AppointmentForm";
 import { PageBanner } from "@/components/site/PageBanner";
 import { site } from "@/data/site";
 import { usePageMeta } from "@/lib/usePageMeta";
-import appointmentBanner from "@/assets/images/hero-doctors.png";
+import appointmentBanner from "@/assets/optimized/hero-doctors.webp";
 
 export function AppointmentPage() {
   usePageMeta(

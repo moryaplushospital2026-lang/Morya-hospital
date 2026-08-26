@@ -37,18 +37,18 @@ import doctor1Image from "@/assets/images/doctor-1.jpg";
 import doctor2Image from "@/assets/images/doctor-2.jpg";
 import doctor3Image from "@/assets/images/doctor-3.jpg";
 import doctor4Image from "@/assets/images/doctor-4.jpg";
-import drHarshadHon from "@/assets/Doctor-images/Dr. Harshad Hon.jpeg";
-import drPratikMemane from "@/assets/Doctor-images/Pratik memane.jpeg";
-import drSwapnilBagdure from "@/assets/Doctor-images/Swapnil-bagdure.jpeg";
+import drHarshadHon from "@/assets/optimized/Dr. Harshad Hon.webp";
+import drPratikMemane from "@/assets/optimized/Pratik memane.webp";
+import drSwapnilBagdure from "@/assets/optimized/Swapnil-bagdure.webp";
 import facilityDiagnostic from "@/assets/images/facility-diagnostic.jpg";
 import facilityIcu from "@/assets/images/facility-icu.jpg";
 import facilityOt from "@/assets/images/facility-ot.jpg";
 import facilityPharmacy from "@/assets/images/facility-pharmacy.jpg";
 import facilityReception from "@/assets/images/facility-reception.jpg";
 import facilityRoom from "@/assets/images/facility-room.jpg";
-import heroDoctors from "@/assets/images/hero-doctors.png";
+import heroDoctors from "@/assets/optimized/hero-doctors.webp";
 import heroEmergency from "@/assets/images/hero-emergency.jpg";
-import heroHospital from "@/assets/images/moryahplushospital.png";
+import heroHospital from "@/assets/optimized/moryahplushospital.webp";
 
 const facilityImages = {
   icu: facilityIcu,
